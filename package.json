@@ -1,0 +1,47 @@
+{
+  "name": "express-template",
+  "module": "main.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch main.ts",
+    "build": "tsc",
+    "start": "bun run main.ts",
+    "studio": "bunx drizzle-kit studio",
+    "db:push": "bunx drizzle-kit push",
+    "db:gen": "bunx drizzle-kit generate",
+    "db:migrate": "bunx drizzle-kit migrate",
+    "db:reset": "bun run database/reset.ts",
+    "db:seed": "bun run database/seed.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/method-override": "^3.0.0",
+    "axios": "^1.11.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "pg": "^8.16.3",
+    "tsc": "^2.0.4",
+    "winston": "^3.17.0",
+    "zod": "^4.0.17"
+  }
+}

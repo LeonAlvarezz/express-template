@@ -6,7 +6,7 @@ import {
   encodeHexLowerCase,
 } from "@oslojs/encoding";
 import { env } from "@/config";
-export default {
+export const authUtil = {
   decodeToSessionId(token: string) {
     return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   },

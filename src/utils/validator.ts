@@ -1,4 +1,4 @@
-import { BadRequestException, InternalServerException } from "@/libs";
+import { BadRequestException, InternalServerException } from "@/lib";
 import type { Request, Response, NextFunction } from "express";
 import { z, ZodError } from "zod";
 

@@ -1,4 +1,4 @@
-import { CriticalError, ErrorCode, Logger } from "@/libs";
+import { CriticalError, ErrorCode, Logger } from "@/lib";
 import type { ErrorRequestHandler, Response } from "express";
 import { isHttpError } from "http-errors";
 import { ZodError } from "zod";

@@ -17,6 +17,8 @@ const envSchema = z.object({
   API_KEY: z.string(),
   PASSWORD_SALT: z.coerce.number(),
   DATABASE_URL: z.string(),
+  BETTER_AUTH_SECRET: z.string(),
+  BETTER_AUTH_URL: z.string(),
   // ...
 });
 

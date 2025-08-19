@@ -23,6 +23,5 @@ export default () => {
       res.status(200).send(data);
     }
   );
-  auths(app);
   return app;
 };

@@ -1,4 +1,4 @@
-import { Logger } from "@/libs";
+import { Logger } from "@/lib";
 import expressLoader from "./express";
 import type { Express } from "express";
 

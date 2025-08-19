@@ -1,5 +1,5 @@
 import { env } from "@/config";
-import { UnauthorizedException } from "@/libs";
+import { UnauthorizedException } from "@/lib";
 import type { NextFunction, Request, Response } from "express";
 
 type ProtectedRouteHandler = (

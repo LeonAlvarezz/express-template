@@ -1,6 +1,6 @@
 import { authUtil } from "@/utils";
 import { db } from ".";
-import { users, auths } from "./schema";
+import { auth } from "@/lib";
 type SeedOptions = {
   user?: boolean;
   settings?: boolean;
@@ -23,30 +23,37 @@ function parseArgs(): SeedOptions {
   return options;
 }
 async function seedDatabase(options: SeedOptions) {
-  await db.transaction(async (tx) => {
-    if (options.user) {
-      const userPassword = await authUtil.hashPassword("12345678");
-      const [userAuth] = await tx
-        .insert(auths)
-        .values({
-          email: "user@test.com",
-          password: userPassword,
-        })
-        .returning();
-      if (!userAuth) return console.log("Failed to create User");
-      const [user] = await tx
-        .insert(users)
-        .values({
-          auth_id: userAuth.id,
-          username: "user",
-        })
-        .returning();
-      if (!users) return console.log("Failed to create Admin");
-      console.log("✅ Admin user created successfully:", {
-        email: userAuth.email,
-        username: user.username,
-      });
-    }
+  // await db.transaction(async (tx) => {
+  //   if (options.user) {
+  //     const userPassword = await betterAuth
+  //     const [userAuth] = await tx
+  //       .insert(auths)
+  //       .values({
+  //         email: "user@test.com",
+  //         password: userPassword,
+  //       })
+  //       .returning();
+  //     if (!userAuth) return console.log("Failed to create User");
+  //     const [user] = await tx
+  //       .insert(users)
+  //       .values({
+  //         auth_id: userAuth.id,
+  //         username: "user",
+  //       })
+  //       .returning();
+  //     if (!users) return console.log("Failed to create Admin");
+  //     console.log("✅ Admin user created successfully:", {
+  //       email: userAuth.email,
+  //       username: user.username,
+  //     });
+  //   }
+  // });
+  await auth.api.signUpEmail({
+    body: {
+      name: "Test",
+      email: "test@example.com",
+      password: "12345678",
+    },
   });
   process.exit(0);
 }

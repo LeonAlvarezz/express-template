@@ -9,7 +9,7 @@ import { env } from "@/config";
 import { default as routes } from "@/api";
 import { ignoreFavicon } from "@/utils";
 import { toNodeHandler } from "better-auth/node";
-import auth from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 export default function expressLoader({ app }: { app: express.Application }) {
   // Security and parsing middleware

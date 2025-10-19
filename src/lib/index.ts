@@ -1,3 +1,3 @@
 export { default as Logger } from "./winston";
-export * from "./errors";
+export * from "../core/error";
 export * from "./auth";

@@ -1,3 +1,4 @@
+import { bookRoute } from "@/modules/book/book.route";
 import {
   Router,
   type NextFunction,
@@ -22,5 +23,6 @@ export default () => {
       res.status(200).send(data);
     }
   );
+  bookRoute(app);
   return app;
 };

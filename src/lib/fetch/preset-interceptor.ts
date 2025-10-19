@@ -6,7 +6,7 @@ import type {
 } from "./modules/types";
 
 import axios from "axios";
-import { DefaultErrorMessage } from "@/lib/errors";
+import { DefaultErrorMessage } from "@/core/error";
 
 export const defaultResponseInterceptor = ({
   codeField = "code",

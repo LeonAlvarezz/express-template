@@ -1,5 +1,5 @@
 import { Logger } from "@/lib";
-import expressLoader from "./express";
+import expressLoader from "./loader";
 import type { Express } from "express";
 
 export default async ({ expressApp }: { expressApp: Express }) => {

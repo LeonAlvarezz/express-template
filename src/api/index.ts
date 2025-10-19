@@ -4,7 +4,6 @@ import {
   type Request,
   type Response,
 } from "express";
-import { auths } from "./routes";
 
 // guaranteed to get dependencies
 

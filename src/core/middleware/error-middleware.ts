@@ -7,7 +7,7 @@ const errorMiddleware: ErrorRequestHandler = (
   error,
   req,
   res: Response,
-  next
+  next,
 ) => {
   console.log("YOU ARE HITTING THIS ENDPOINT 👉:", req.url);
   let statusCode = error.status || 500;
@@ -15,13 +15,7 @@ const errorMiddleware: ErrorRequestHandler = (
   Logger.error("🔥 Error occurred: %o", error);
 
   if (error instanceof CriticalError) {
-    return res.status(error.status).json({
-      errors: {
-        status: error.status,
-        message: error.message,
-        metadata: error.metadata,
-      },
-    });
+    return res.error(error.message, error.status, error.metadata);
   }
 
   if (isHttpError(error)) {
@@ -33,15 +27,11 @@ const errorMiddleware: ErrorRequestHandler = (
     const errorMessages = error.issues.map((issue) => ({
       message: `${issue.path.join(".")} is ${issue.message}`,
     }));
-    res
-      .status(statusCode)
-      .json({ statusCode: statusCode, error: errorMessages });
+    return res.error(errorMessages.join("/n"), statusCode);
   }
 
   // Return a sanitized error res
-  return res
-    .status(statusCode)
-    .json({ statusCode: statusCode, error: errorMessage });
+  return res.error(errorMessage, statusCode);
 };
 
 export default errorMiddleware;

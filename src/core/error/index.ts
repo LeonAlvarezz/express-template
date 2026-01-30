@@ -33,7 +33,7 @@ export type ErrorParams = {
 const createError = (
   status: number,
   defaultMessage: string,
-  params?: ErrorParams
+  params?: ErrorParams,
 ): CustomError => ({
   status,
   message: params?.message || defaultMessage,
@@ -44,7 +44,7 @@ export class CriticalError extends Error {
   constructor(
     public status: number,
     message: string,
-    public metadata?: Record<string, string>
+    public metadata?: Record<string, string>,
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -56,7 +56,7 @@ export class BadRequestException extends CriticalError {
     super(
       ErrorCode.BAD_REQUEST,
       params?.message || DefaultErrorMessage.BAD_REQUEST,
-      params?.options
+      params?.options,
     );
   }
 }
@@ -66,7 +66,7 @@ export class NotFoundException extends CriticalError {
     super(
       ErrorCode.NOT_FOUND,
       params?.message || DefaultErrorMessage.NOT_FOUND,
-      params?.options
+      params?.options,
     );
   }
 }
@@ -76,7 +76,7 @@ export class UnauthorizedException extends CriticalError {
     super(
       ErrorCode.UNAUTHORIZED,
       params?.message || DefaultErrorMessage.UNAUTHORIZED,
-      params?.options
+      params?.options,
     );
   }
 }
@@ -86,7 +86,7 @@ export class ForbiddenException extends CriticalError {
     super(
       ErrorCode.FORBIDDEN,
       params?.message || DefaultErrorMessage.FORBIDDEN,
-      params?.options
+      params?.options,
     );
   }
 }
@@ -96,7 +96,13 @@ export class InternalServerException extends CriticalError {
     super(
       ErrorCode.INTERNAL_SERVER,
       params?.message || DefaultErrorMessage.INTERNAL_SERVER,
-      params?.options
+      params?.options,
     );
+  }
+}
+
+export class CustomException extends CriticalError {
+  constructor(params?: ErrorParams) {
+    super(555, params?.message || "Custom Error", params?.options);
   }
 }

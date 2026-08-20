@@ -1,17 +1,17 @@
-import { bookRoute } from "@/modules/book/book.route";
 import {
   Router,
   type NextFunction,
   type Request,
   type Response,
 } from "express";
+import { authRoute } from "@/modules/auth/auth.route";
 
 // guaranteed to get dependencies
 
 export default () => {
   const app = Router();
 
-  //Health Check
+  // Health Check
   app.get(
     "/health-check",
     (_req: Request, res: Response, _next: NextFunction) => {
@@ -21,8 +21,11 @@ export default () => {
         date: new Date(),
       };
       res.status(200).send(data);
-    }
+    },
   );
-  bookRoute(app);
+
+  // Auth Routes
+  authRoute(app);
+
   return app;
 };

@@ -30,10 +30,17 @@ export const responseWrapper = (
 
   res.error = function (
     message: string = "Internal Server Error",
-    statusCode: number = 500,
+    statusCode: number | string = 500,
     data: any = null
   ): Response {
-    return res.status(statusCode).json({
+    const validStatusCode =
+      typeof statusCode === "number" && !isNaN(statusCode)
+        ? statusCode
+        : typeof statusCode === "string" && !isNaN(Number(statusCode))
+          ? Number(statusCode)
+          : 500;
+
+    return res.status(validStatusCode).json({
       success: false,
       data,
       message,

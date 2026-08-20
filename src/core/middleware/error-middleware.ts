@@ -10,12 +10,30 @@ const errorMiddleware: ErrorRequestHandler = (
   next,
 ) => {
   console.log("YOU ARE HITTING THIS ENDPOINT 👉:", req.url);
-  let statusCode = error.status || 500;
-  let errorMessage = error.errorMessage || "An unknown error occurred";
+  let statusCode =
+    typeof error.statusCode === "number"
+      ? error.statusCode
+      : typeof error.status === "number"
+        ? error.status
+        : typeof error.status === "string" && !isNaN(Number(error.status))
+          ? Number(error.status)
+          : 500;
+
+  let errorMessage =
+    error.message ||
+    error.errorMessage ||
+    (typeof error.body?.message === "string"
+      ? error.body.message
+      : "An unknown error occurred");
+
   Logger.error("🔥 Error occurred: %o", error);
 
   if (error instanceof CriticalError) {
-    return res.error(error.message, error.status, error.metadata);
+    return res.error(
+      error.message,
+      typeof error.status === "number" ? error.status : 500,
+      error.metadata,
+    );
   }
 
   if (isHttpError(error)) {
@@ -24,10 +42,10 @@ const errorMiddleware: ErrorRequestHandler = (
   }
 
   if (error instanceof ZodError) {
-    const errorMessages = error.issues.map((issue) => ({
-      message: `${issue.path.join(".")} is ${issue.message}`,
-    }));
-    return res.error(errorMessages.join("/n"), statusCode);
+    const errorMessages = error.issues.map(
+      (issue) => `${issue.path.join(".")} is ${issue.message}`,
+    );
+    return res.error(errorMessages.join("\n"), statusCode);
   }
 
   // Return a sanitized error res

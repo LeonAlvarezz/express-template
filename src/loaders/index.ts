@@ -13,7 +13,7 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     Logger.info("✌️ Dependency Injector loaded");
 
     // Apply express loader
-    await expressLoader({ app: expressApp });
+    expressLoader({ app: expressApp });
 
     // Log after express loader
     Logger.info("✌️ Express loaded");

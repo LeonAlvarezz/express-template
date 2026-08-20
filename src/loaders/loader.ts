@@ -16,7 +16,15 @@ export default function expressLoader({ app }: { app: express.Application }) {
   // Security and parsing middleware
   app.enable("trust proxy");
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        return callback(null, origin);
+      },
+      credentials: true,
+    }),
+  );
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(express.json());
@@ -25,7 +33,7 @@ export default function expressLoader({ app }: { app: express.Application }) {
 
   app.use(responseWrapper);
 
-  app.all("/api/auth/*splat", toNodeHandler(auth));
+  // app.all("/api/auth/*splat", toNodeHandler(auth));
   app.use(env.API_PREFIX, routeHandler());
 
   // API routes

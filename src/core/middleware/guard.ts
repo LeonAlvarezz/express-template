@@ -1,32 +1,52 @@
-import { env } from "@/config";
+import { auth } from "@/lib/auth";
 import { UnauthorizedException } from "@/lib";
+import { fromNodeHeaders } from "better-auth/node";
 import type { NextFunction, Request, Response } from "express";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: typeof auth.$Infer.Session.user;
+      session?: typeof auth.$Infer.Session.session;
+    }
+  }
+}
 
 type ProtectedRouteHandler = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => void | Promise<void>;
 
 function protectedRoute(
   handler: ProtectedRouteHandler,
   options?: {
-    resource: string;
-    action: "read" | "write" | "delete";
-  }
+    resource?: string;
+    action?: "read" | "write" | "delete";
+  },
 ) {
   return async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     try {
-      const key = req.get("x-api-key");
-      if (!key || key !== env.API_KEY) throw new UnauthorizedException();
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+
+      if (!session) {
+        throw new UnauthorizedException();
+      }
+
+      req.user = session.user;
+      req.session = session.session;
+
       await handler(req, res, next);
     } catch (error) {
       next(error);
     }
   };
 }
+
 export default protectedRoute;

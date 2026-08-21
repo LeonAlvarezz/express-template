@@ -8,6 +8,27 @@
       "when": 1787048994889,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787222546241,
+      "tag": "0001_role_and_permission",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787222815706,
+      "tag": "0002_add_product_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1787282987330,
+      "tag": "0003_change_product_id_to_serial",
+      "breakpoints": true
     }
   ]
 }

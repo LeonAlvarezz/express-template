@@ -5,6 +5,7 @@ import {
   type Response,
 } from "express";
 import { authRoute } from "@/modules/auth/auth.route";
+import { productRoute } from "@/modules/product/product.route";
 
 // guaranteed to get dependencies
 
@@ -26,6 +27,9 @@ export default () => {
 
   // Auth Routes
   authRoute(app);
+
+  // Product Routes
+  productRoute(app);
 
   return app;
 };

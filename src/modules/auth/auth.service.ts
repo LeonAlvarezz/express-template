@@ -1,6 +1,5 @@
 import { auth, UnauthorizedException } from "@/lib";
 import type { SignInEmail, SignInEmailResponse } from "@admin/types";
-import { APIError } from "better-auth";
 
 export class AuthService {
   async signInEmail(payload: SignInEmail, headers?: HeadersInit) {

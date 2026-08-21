@@ -36,6 +36,9 @@ export default function expressLoader({ app }: { app: express.Application }) {
   // app.all("/api/auth/*splat", toNodeHandler(auth));
   app.use(env.API_PREFIX, routeHandler());
 
+  // Direct redirects for convenience
+  app.get("/docs", (_req, res) => res.redirect(`${env.API_PREFIX}/docs`));
+
   // API routes
   app.use("/{*any}", (_req, res, next) => {
     next(createHttpError(404, "Endpoint Not Found"));

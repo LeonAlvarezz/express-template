@@ -8,7 +8,7 @@ import {
   type FindAllProductsParams,
   ProductRepository,
 } from "./product.repository";
-import { auth, ForbiddenException } from "@/lib";
+import { auth, ForbiddenException, NotFoundException } from "@/lib";
 
 export class ProductService {
   private readonly productRepository: ProductRepository;
@@ -25,8 +25,12 @@ export class ProductService {
     return this.productRepository.findById(id);
   }
 
-  findBySlug(slug: string) {
-    return this.productRepository.findBySlug(slug);
+  async findBySlug(slug: string) {
+    const item = await this.productRepository.findBySlug(slug);
+    if (!item) {
+      throw new NotFoundException({ message: "Product not found" });
+    }
+    return item;
   }
 
   async create(data: CreateProduct, user: User) {
@@ -40,7 +44,7 @@ export class ProductService {
       },
     });
 
-    if (!canCreateProject)
+    if (!canCreateProject.success)
       throw new ForbiddenException({
         message: "You do not have permission to perform this action",
       });

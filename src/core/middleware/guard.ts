@@ -2,11 +2,12 @@ import { auth } from "@/lib/auth";
 import { UnauthorizedException } from "@/lib";
 import { fromNodeHeaders } from "better-auth/node";
 import type { NextFunction, Request, Response } from "express";
+import type { User } from "@admin/types";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: typeof auth.$Infer.Session.user;
+      user?: User;
       session?: typeof auth.$Infer.Session.session;
     }
   }

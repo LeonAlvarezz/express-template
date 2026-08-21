@@ -1,6 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import { ProductService } from "./product.service";
-import { CreateProductSchema, UpdateProductSchema } from "@admin/types";
+import {
+  CreateProductSchema,
+  NumberIdSchema,
+  UpdateProductSchema,
+} from "@admin/types";
 import * as v from "valibot";
 import {
   BadRequestException,
@@ -35,17 +39,17 @@ export class ProductController {
 
   findById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = Number(req.params.id);
+      if (!req.user) throw new UnauthorizedException();
+      console.log({ params: req.params.id });
 
+      const id = v.parse(v.number(), Number(req.params.id));
       if (isNaN(id)) {
         throw new BadRequestException({ message: "Invalid product ID" });
       }
-
       const item = await this.productService.findById(id);
       if (!item) {
         throw new NotFoundException({ message: "Product not found" });
       }
-
       res.success(item);
     } catch (error) {
       next(error);
@@ -56,10 +60,6 @@ export class ProductController {
     try {
       const slug = req.params.slug as string;
       const item = await this.productService.findBySlug(slug);
-      if (!item) {
-        throw new NotFoundException({ message: "Product not found" });
-      }
-
       res.success(item);
     } catch (error) {
       next(error);
@@ -68,12 +68,13 @@ export class ProductController {
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) {
+      const user = req.user;
+      if (!user) {
         throw new UnauthorizedException();
       }
 
       const payload = v.parse(CreateProductSchema, req.body);
-      const item = await this.productService.create(payload, req.user as any);
+      const item = await this.productService.create(payload, user);
 
       res.success(item, "Product created successfully", 201);
     } catch (error) {

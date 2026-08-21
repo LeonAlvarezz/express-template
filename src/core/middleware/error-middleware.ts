@@ -1,4 +1,5 @@
 import { CriticalError, ErrorCode, Logger } from "@/lib";
+import { DrizzleError, DrizzleQueryError } from "drizzle-orm";
 import type { ErrorRequestHandler, Response } from "express";
 import { isHttpError } from "http-errors";
 import { ZodError } from "zod";
@@ -46,6 +47,11 @@ const errorMiddleware: ErrorRequestHandler = (
       (issue) => `${issue.path.join(".")} is ${issue.message}`,
     );
     return res.error(errorMessages.join("\n"), statusCode);
+  }
+
+  if (error instanceof DrizzleQueryError) {
+    const detail = error.cause?.message || "";
+    return res.error(detail, 409);
   }
 
   // Return a sanitized error res

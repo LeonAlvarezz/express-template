@@ -34,6 +34,12 @@ export async function startServer() {
 
     process.on("SIGTERM", shutdown);
     process.on("SIGINT", shutdown);
+    process.on("unhandledRejection", (reason, promise) => {
+      console.error("⚠️ Unhandled Rejection at:", promise, "reason:", reason);
+    });
+    process.on("uncaughtException", (error) => {
+      console.error("🔥 Uncaught Exception:", error);
+    });
     return server;
   } catch (error) {
     console.error("Catastrophic server initialization error:", error);
